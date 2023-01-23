@@ -12,8 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.andoliver46.dscatalog.dto.CategoryDTO;
 import com.andoliver46.dscatalog.dto.ProductDTO;
+import com.andoliver46.dscatalog.entities.Category;
 import com.andoliver46.dscatalog.entities.Product;
+import com.andoliver46.dscatalog.repositories.CategoryRepository;
 import com.andoliver46.dscatalog.repositories.ProductRepository;
 import com.andoliver46.dscatalog.services.exceptions.DatabaseException;
 import com.andoliver46.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -23,6 +26,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repo;
+	
+	@Autowired
+	private CategoryRepository categoryRepo;
 
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
@@ -33,25 +39,26 @@ public class ProductService {
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
 		Optional<Product> obj = repo.findById(id);
-		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("A categoria de Id: " + id + " não foi encontrada."));
+		Product entity = obj
+				.orElseThrow(() -> new ResourceNotFoundException("A categoria de Id: " + id + " não foi encontrada."));
 		return new ProductDTO(entity, entity.getCategories());
 	}
 
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
-		Product obj = new Product();
-		//obj.setName(dto.getName());
-		obj = repo.save(obj);
-		return new ProductDTO(obj);
+		Product entity = new Product();
+		copyDtoToEntity(dto, entity);
+		entity = repo.save(entity);
+		return new ProductDTO(entity);
 	}
 
 	@Transactional
 	public ProductDTO update(ProductDTO dto, Long id) {
 		try {
-			Product obj = repo.getOne(id);
-			//obj.setName(dto.getName());
-			obj = repo.save(obj);
-			return new ProductDTO(obj);
+			Product entity = repo.getOne(id);
+			copyDtoToEntity(dto, entity);
+			entity = repo.save(entity);
+			return new ProductDTO(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("A categoria de Id: " + id + " não foi encontrada.");
 		}
@@ -69,4 +76,17 @@ public class ProductService {
 
 	}
 
+	private void copyDtoToEntity(ProductDTO dto, Product entity) {
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setDate(dto.getDate());
+		entity.setPrice(dto.getPrice());
+		entity.setImgUrl(dto.getImgUrl());
+
+		entity.getCategories().clear();
+		for(CategoryDTO catDto : dto.getCategories()) {
+			Category category = categoryRepo.getOne(catDto.getId());
+			entity.getCategories().add(category);
+		}
+	}
 }
