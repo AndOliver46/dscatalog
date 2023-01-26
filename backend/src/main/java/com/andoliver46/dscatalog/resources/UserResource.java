@@ -16,37 +16,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.andoliver46.dscatalog.dto.ProductDTO;
-import com.andoliver46.dscatalog.services.ProductService;
+import com.andoliver46.dscatalog.dto.UserDTO;
+import com.andoliver46.dscatalog.dto.UserInsertDTO;
+import com.andoliver46.dscatalog.services.UserService;
 
 @RestController
-@RequestMapping(value = "/products")
-public class ProductResource {
+@RequestMapping(value = "/users")
+public class UserResource {
 
 	@Autowired
-	private ProductService service;
+	private UserService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAllPaged(Pageable pageable){
-		Page<ProductDTO> list = service.findAllPaged(pageable);
+	public ResponseEntity<Page<UserDTO>> findAllPaged(Pageable pageable){
+		Page<UserDTO> list = service.findAllPaged(pageable);
 		return ResponseEntity.ok(list);
 	}
 	
 	@GetMapping(value = "{id}")
-	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
-		ProductDTO cat = service.findById(id);
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+		UserDTO cat = service.findById(id);
 		return ResponseEntity.ok(cat);
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
-		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto);
+	public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto) {
+		UserDTO newDto = service.insert(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDto.getId()).toUri();
+		return ResponseEntity.created(uri).body(newDto);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO dto, @PathVariable Long id){
+	public ResponseEntity<UserDTO> update(@RequestBody UserDTO dto, @PathVariable Long id){
 		dto = service.update(dto, id);
 		return ResponseEntity.ok(dto);
 	}
