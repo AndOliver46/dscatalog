@@ -44,8 +44,7 @@ public class ProductRepositoryTests {
 		Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
 
 			repo.deleteById(nonExistingId);
-
-			Optional<Product> result = repo.findById(nonExistingId);
+			repo.findById(nonExistingId);
 		});
 	}
 

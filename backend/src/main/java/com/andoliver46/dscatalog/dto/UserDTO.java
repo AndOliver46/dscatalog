@@ -8,7 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import com.andoliver46.dscatalog.entities.User;
-import com.andoliver46.dscatalog.services.validation.UserUpdateValid;
 
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
