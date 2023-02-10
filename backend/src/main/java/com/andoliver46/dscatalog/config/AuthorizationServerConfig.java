@@ -18,7 +18,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.andoliver46.dscatalog.components.JwtTokenEnhancer;
 
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
