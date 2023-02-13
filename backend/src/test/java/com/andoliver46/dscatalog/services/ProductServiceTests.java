@@ -73,6 +73,8 @@ public class ProductServiceTests {
 		
 		Mockito.when(repository.findById(exisitingId)).thenReturn(Optional.of(product));
 		Mockito.when(repository.findById(nonExisitingId)).thenReturn(Optional.empty());
+		
+		Mockito.when(repository.find(ArgumentMatchers.any(),ArgumentMatchers.any(),ArgumentMatchers.any())).thenReturn(page);
 
 		Mockito.doNothing().when(repository).deleteById(exisitingId);
 		Mockito.doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExisitingId);
@@ -114,10 +116,9 @@ public class ProductServiceTests {
 		
 		Pageable pageable = PageRequest.of(0, 10);
 	
-		Page<ProductDTO> result = service.findAllPaged(pageable);
+		Page<ProductDTO> result = service.findAllPaged(pageable, 0L, "");
 		
 		Assertions.assertNotNull(result);
-		Mockito.verify(repository, Mockito.times(1)).findAll(pageable);
 	}
 	
 	@Test
