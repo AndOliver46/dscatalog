@@ -1,5 +1,7 @@
 Projeto FullStack (Java Spring + React) para criação do zero de um site de venda de produtos diversos chamado DSCatalog.
 
+![image](https://user-images.githubusercontent.com/101358552/224450673-24471a94-adcb-4316-af59-a00838c6faf4.png)
+
 Nesse projeto são abordados os seguintes assuntos:
 
 Backend:
