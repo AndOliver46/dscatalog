@@ -1,6 +1,6 @@
 ## Project Overview:
 
-Fullstack project (Java Spring + ReactJS). Creation from scratch of a e-commerce called DSCatalog that sells several products.
+Fullstack project (Java Spring + ReactJS). Creation from scratch of a e-commerce called DSCatalog that sells several products.</br>
 Obs: Studying Js and React to implement Front-end.
 
 ## Run requirements:
